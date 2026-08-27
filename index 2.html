@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bass Jay — Web Developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#11161C;
+    --ink-soft:#1B2229;
+    --paper:#F6F4EF;
+    --paper-dim:#EDEAE2;
+    --line:#DCD7C9;
+    --line-dark:#2A323B;
+    --text:#1B2229;
+    --text-dim:#5B6470;
+    --text-on-ink:#EDEFF2;
+    --text-on-ink-dim:#8B94A0;
+    --blue:#2F6FED;
+    --blue-dim:#1E4FBE;
+    --amber:#E8A33D;
+    --green-dot:#3FBF6F;
+    --yellow-dot:#E8B93D;
+    --red-dot:#E8593D;
+    --radius:10px;
+    --font-display:'Space Grotesk', sans-serif;
+    --font-body:'Inter', sans-serif;
+    --font-mono:'JetBrains Mono', monospace;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:var(--font-body);
+    background:var(--paper);
+    color:var(--text);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  img{max-width:100%; display:block;}
+  a{color:inherit; text-decoration:none;}
+  .wrap{max-width:1080px; margin:0 auto; padding:0 24px;}
+  section{padding:88px 0;}
+
+  ::selection{background:var(--blue); color:#fff;}
+
+  /* ---------- Browser chrome motif (signature element) ---------- */
+  .chrome{
+    border:1px solid var(--line-dark);
+    border-radius:12px;
+    overflow:hidden;
+    background:var(--ink-soft);
+  }
+  .chrome-bar{
+    display:flex;
+    align-items:center;
+    gap:16px;
+    padding:12px 16px;
+    background:#161C22;
+    border-bottom:1px solid var(--line-dark);
+  }
+  .chrome-dots{display:flex; gap:7px; flex-shrink:0;}
+  .chrome-dots span{width:10px; height:10px; border-radius:50%; display:block;}
+  .chrome-dots span:nth-child(1){background:var(--red-dot);}
+  .chrome-dots span:nth-child(2){background:var(--yellow-dot);}
+  .chrome-dots span:nth-child(3){background:var(--green-dot);}
+  .chrome-url{
+    font-family:var(--font-mono);
+    font-size:12px;
+    color:var(--text-on-ink-dim);
+    background:#0D1216;
+    border:1px solid var(--line-dark);
+    border-radius:6px;
+    padding:5px 12px;
+    flex:1;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+
+  /* ---------- Top nav ---------- */
+  header{
+    position:sticky; top:0; z-index:50;
+    background:rgba(17,22,28,0.92);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line-dark);
+  }
+  .nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px 24px;
+    max-width:1080px; margin:0 auto;
+  }
+  .brand{
+    font-family:var(--font-mono);
+    font-weight:600;
+    font-size:15px;
+    color:var(--text-on-ink);
+    display:flex; align-items:center; gap:8px;
+  }
+  .brand .cursor{
+    width:8px; height:16px; background:var(--blue);
+    display:inline-block;
+    animation:blink 1.1s steps(1) infinite;
+  }
+  @keyframes blink{50%{opacity:0;}}
+  .nav-links{display:flex; gap:28px; font-family:var(--font-mono); font-size:13px;}
+  .nav-links a{color:var(--text-on-ink-dim); transition:color .2s;}
+  .nav-links a:hover{color:var(--text-on-ink);}
+  .nav-links a::before{content:"// ";}
+  .nav-cta{
+    font-family:var(--font-mono); font-size:13px;
+    background:var(--blue); color:#fff;
+    padding:8px 16px; border-radius:6px;
+    white-space:nowrap;
+  }
+  @media(max-width:720px){ .nav-links{display:none;} }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    background:var(--ink);
+    color:var(--text-on-ink);
+    padding:72px 0 96px;
+    position:relative;
+    overflow:hidden;
+    background-image:
+      linear-gradient(var(--line-dark) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line-dark) 1px, transparent 1px);
+    background-size:48px 48px;
+    background-position:center top;
+  }
+  .hero::after{
+    content:"";
+    position:absolute; inset:0;
+    background:radial-gradient(ellipse 70% 60% at 50% 0%, rgba(17,22,28,0) 0%, var(--ink) 78%);
+  }
+  .hero-inner{position:relative; z-index:2; text-align:center;}
+  .eyebrow{
+    font-family:var(--font-mono);
+    font-size:13px;
+    color:var(--amber);
+    display:inline-flex; align-items:center; gap:8px;
+    background:rgba(232,163,61,0.08);
+    border:1px solid rgba(232,163,61,0.3);
+    padding:6px 14px;
+    border-radius:100px;
+    margin-bottom:28px;
+  }
+  .eyebrow .pulse{width:6px; height:6px; border-radius:50%; background:var(--green-dot); animation:pulse 2s infinite;}
+  @keyframes pulse{0%,100%{opacity:1;} 50%{opacity:.3;}}
+  .hero h1{
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:clamp(42px, 8vw, 76px);
+    line-height:1.05;
+    letter-spacing:-0.02em;
+    margin-bottom:20px;
+  }
+  .hero h1 .accent{color:var(--blue);}
+  .hero p.tagline{
+    font-family:var(--font-mono);
+    font-size:clamp(14px,2.4vw,17px);
+    color:var(--text-on-ink-dim);
+    max-width:520px;
+    margin:0 auto 40px;
+  }
+  .hero p.tagline span{color:var(--text-on-ink);}
+  .hero-ctas{display:flex; gap:14px; justify-content:center; flex-wrap:wrap; margin-bottom:64px;}
+  .btn{
+    font-family:var(--font-body);
+    font-weight:600;
+    font-size:15px;
+    padding:14px 28px;
+    border-radius:8px;
+    display:inline-block;
+    transition:transform .15s ease, opacity .15s ease;
+  }
+  .btn:active{transform:scale(0.97);}
+  .btn-primary{background:var(--blue); color:#fff;}
+  .btn-primary:hover{background:var(--blue-dim);}
+  .btn-outline{border:1px solid var(--line-dark); color:var(--text-on-ink);}
+  .btn-outline:hover{border-color:var(--text-on-ink-dim);}
+
+  .hero-window{max-width:760px; margin:0 auto; text-align:left; box-shadow:0 40px 80px -20px rgba(0,0,0,0.6);}
+  .hero-window .chrome-body{
+    padding:22px 24px;
+    font-family:var(--font-mono);
+    font-size:13px;
+    color:var(--text-on-ink-dim);
+    line-height:1.9;
+  }
+  .hero-window .l1{color:var(--green-dot);}
+  .hero-window .l2{color:var(--text-on-ink);}
+  .hero-window .l3 span{color:var(--amber);}
+
+  /* ---------- Section headers ---------- */
+  .section-head{margin-bottom:48px;}
+  .kicker{
+    font-family:var(--font-mono);
+    font-size:12px;
+    color:var(--blue-dim);
+    letter-spacing:0.06em;
+    display:block;
+    margin-bottom:10px;
+  }
+  .kicker::before{content:"/* "; color:var(--text-dim);}
+  .kicker::after{content:" */"; color:var(--text-dim);}
+  h2{
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:clamp(28px,4vw,38px);
+    letter-spacing:-0.01em;
+  }
+
+  /* ---------- About ---------- */
+  .about-grid{display:grid; grid-template-columns:220px 1fr; gap:48px; align-items:start;}
+  .about-photo{
+    aspect-ratio:1/1;
+    border-radius:var(--radius);
+    background:linear-gradient(145deg, #223047, #11161C);
+    border:1px solid var(--line);
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--font-mono); font-size:12px; color:var(--text-on-ink-dim);
+    text-align:center; padding:16px;
+    position:relative;
+    overflow:hidden;
+  }
+  .about-photo img{width:100%; height:100%; object-fit:cover; position:absolute; inset:0;}
+  .about-text p{color:var(--text-dim); font-size:16.5px; max-width:56ch;}
+  .about-text p + p{margin-top:16px;}
+  .about-stats{display:flex; gap:36px; margin-top:32px; flex-wrap:wrap;}
+  .stat b{font-family:var(--font-display); font-size:28px; display:block;}
+  .stat span{font-family:var(--font-mono); font-size:12px; color:var(--text-dim);}
+  @media(max-width:640px){ .about-grid{grid-template-columns:1fr;} .about-photo{max-width:180px;} }
+
+  /* ---------- Services ---------- */
+  .services{background:var(--ink); color:var(--text-on-ink);}
+  .services .kicker{color:var(--amber);}
+  .services .kicker::before, .services .kicker::after{color:var(--text-on-ink-dim);}
+  .service-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line-dark); border:1px solid var(--line-dark); border-radius:12px; overflow:hidden;}
+  .service-card{background:var(--ink-soft); padding:32px 26px;}
+  .service-card .num{font-family:var(--font-mono); font-size:12px; color:var(--blue); margin-bottom:16px; display:block;}
+  .service-card h3{font-family:var(--font-display); font-size:19px; margin-bottom:10px;}
+  .service-card p{font-size:14px; color:var(--text-on-ink-dim);}
+  @media(max-width:760px){ .service-grid{grid-template-columns:1fr;} }
+
+  /* ---------- Projects ---------- */
+  .project-list{display:flex; flex-direction:column; gap:28px;}
+  .project-card .chrome-body{background:var(--paper-dim);}
+  .project-thumb{
+    aspect-ratio:16/9; width:100%;
+    background:linear-gradient(135deg,#2F6FED22,#E8A33D22), var(--paper-dim);
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--font-mono); font-size:12px; color:var(--text-dim);
+    position:relative; overflow:hidden;
+  }
+  .project-thumb img{width:100%; height:100%; object-fit:cover; position:absolute; inset:0;}
+  .project-info{padding:22px 24px; background:var(--paper);}
+  .project-info h3{font-family:var(--font-display); font-size:20px; margin-bottom:6px;}
+  .project-info p{color:var(--text-dim); font-size:14.5px; margin-bottom:14px;}
+  .project-tags{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px;}
+  .project-tags span{
+    font-family:var(--font-mono); font-size:11px; color:var(--blue-dim);
+    background:#2F6FED14; border:1px solid #2F6FED30;
+    padding:3px 9px; border-radius:5px;
+  }
+  .project-link{font-family:var(--font-mono); font-size:13px; color:var(--blue-dim); font-weight:600;}
+  .project-link::after{content:" →"; transition:margin .15s;}
+  .project-link:hover::after{margin-left:4px;}
+
+  /* ---------- Pricing ---------- */
+  .price-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:20px;}
+  .price-card{
+    border:1px solid var(--line); border-radius:12px; padding:32px 26px;
+    background:#fff;
+  }
+  .price-card.featured{
+    border-color:var(--blue); background:var(--ink); color:var(--text-on-ink);
+    position:relative; transform:translateY(-8px);
+  }
+  .price-card.featured .price-tag{background:var(--amber); color:var(--ink);}
+  .featured-badge{
+    font-family:var(--font-mono); font-size:11px; color:var(--amber);
+    display:block; margin-bottom:14px;
+  }
+  .price-card h3{font-family:var(--font-display); font-size:19px; margin-bottom:14px;}
+  .price-tag{
+    font-family:var(--font-mono); font-weight:600; font-size:22px;
+    display:inline-block; margin-bottom:14px;
+    background:var(--paper-dim); padding:6px 12px; border-radius:6px;
+  }
+  .price-card p{font-size:14px; color:var(--text-dim);}
+  .price-card.featured p{color:var(--text-on-ink-dim);}
+  @media(max-width:760px){ .price-grid{grid-template-columns:1fr;} .price-card.featured{transform:none;} }
+
+  /* ---------- Skills ---------- */
+  .skills-row{display:flex; gap:10px; flex-wrap:wrap;}
+  .skill-chip{
+    font-family:var(--font-mono); font-size:13px;
+    border:1px solid var(--line); border-radius:100px;
+    padding:9px 18px; background:#fff;
+    display:inline-flex; align-items:center; gap:8px;
+  }
+  .skill-chip::before{content:"●"; font-size:8px; color:var(--blue);}
+
+  /* ---------- Contact ---------- */
+  .contact{background:var(--ink); color:var(--text-on-ink); text-align:center;}
+  .contact h2{margin-bottom:16px;}
+  .contact p{color:var(--text-on-ink-dim); max-width:480px; margin:0 auto 36px; font-size:16px;}
+  .contact-ctas{display:flex; gap:14px; justify-content:center; flex-wrap:wrap; margin-bottom:56px;}
+  .contact-links{display:flex; gap:28px; justify-content:center; flex-wrap:wrap; font-family:var(--font-mono); font-size:13px; color:var(--text-on-ink-dim);}
+  .contact-links a:hover{color:var(--text-on-ink);}
+
+  footer{
+    padding:28px 24px; text-align:center;
+    font-family:var(--font-mono); font-size:12px; color:var(--text-dim);
+    background:var(--paper-dim); border-top:1px solid var(--line);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <div class="brand"><span class="cursor"></span>bass-jay</div>
+    <nav class="nav-links">
+      <a href="#about">about</a>
+      <a href="#work">work</a>
+      <a href="#services">services</a>
+      <a href="#pricing">pricing</a>
+    </nav>
+    <a class="nav-cta" href="#contact">let's talk</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap hero-inner">
+    <span class="eyebrow"><span class="pulse"></span>AVAILABLE FOR NEW PROJECTS</span>
+    <h1>Websites that turn<br>visitors into <span class="accent">customers.</span></h1>
+    <p class="tagline">Hi, I'm <span>Bass Jay</span> — a frontend &amp; WordPress developer helping businesses launch fast, modern, conversion-focused websites.</p>
+    <div class="hero-ctas">
+      <a href="#work" class="btn btn-primary">View My Work</a>
+      <a href="#contact" class="btn btn-outline">Let's Talk</a>
+    </div>
+
+    <div class="hero-window chrome">
+      <div class="chrome-bar">
+        <div class="chrome-dots"><span></span><span></span><span></span></div>
+        <div class="chrome-url">bass-jay.github.io</div>
+      </div>
+      <div class="chrome-body">
+        <div class="l1">$ whoami</div>
+        <div class="l2">bass-jay — web developer, Lagos 🇳🇬</div>
+        <div class="l1">$ stack --list</div>
+        <div class="l3">HTML <span>·</span> CSS <span>·</span> WordPress <span>·</span> Git &amp; GitHub <span>·</span> SEO</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="wrap">
+    <div class="about-grid">
+      <div class="about-photo">
+        <img src="images/profile.jpg" alt="Bass Jay">
+      </div>
+      <div class="about-text">
+        <span class="kicker">about</span>
+        <h2 style="margin-bottom:18px;">Turning ideas into functional digital products</h2>
+        <p>I help businesses and entrepreneurs create modern, responsive, and conversion-focused websites. Whether it's a company website, landing page, or WordPress build, I turn ideas into digital products that attract customers.</p>
+        <p>I care about the details that actually move the needle: fast load times, clean structure, and pages built to get visitors to act — not just look good.</p>
+        <div class="about-stats">
+          <div class="stat"><b>HTML/CSS</b><span>CORE STACK</span></div>
+          <div class="stat"><b>WordPress</b><span>SPECIALTY</span></div>
+          <div class="stat"><b>SEO-Ready</b><span>ON EVERY BUILD</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="services" id="services">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="kicker">services</span>
+      <h2>What I can do for you</h2>
+    </div>
+    <div class="service-grid">
+      <div class="service-card">
+        <span class="num">01</span>
+        <h3>Business Websites</h3>
+        <p>Clean, professional sites that give your company credibility online.</p>
+      </div>
+      <div class="service-card">
+        <span class="num">02</span>
+        <h3>WordPress Design</h3>
+        <p>Fully custom WordPress builds you can manage yourself after launch.</p>
+      </div>
+      <div class="service-card">
+        <span class="num">03</span>
+        <h3>Landing Pages</h3>
+        <p>Focused, high-converting pages built for a single campaign or offer.</p>
+      </div>
+      <div class="service-card">
+        <span class="num">04</span>
+        <h3>Redesign &amp; Fixes</h3>
+        <p>Modernize an outdated site or fix what's broken on your current one.</p>
+      </div>
+      <div class="service-card">
+        <span class="num">05</span>
+        <h3>Basic SEO Setup</h3>
+        <p>On-page SEO fundamentals so people can actually find your site.</p>
+      </div>
+      <div class="service-card">
+        <span class="num">06</span>
+        <h3>Ongoing Support</h3>
+        <p>Ask about maintenance plans to keep your site fast, safe, and current.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="work">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="kicker">selected work</span>
+      <h2>My Projects</h2>
+    </div>
+    <div class="project-list">
+
+      <div class="project-card chrome">
+        <div class="chrome-bar">
+          <div class="chrome-dots"><span></span><span></span><span></span></div>
+          <div class="chrome-url">tcjhomeaccents.com</div>
+        </div>
+        <div class="project-thumb">
+          <img src="images/project1.jpg" alt="Discover Furniture's for Living — TCJ Home Accents">
+        </div>
+        <div class="project-info">
+          <h3>Discover Furniture's for Living</h3>
+          <p>A furniture e-commerce site offering stylish, high-quality pieces designed to transform any home into a space of comfort and elegance.</p>
+          <div class="project-tags"><span>WordPress</span><span>E-commerce</span></div>
+          <a href="https://tcjhomeaccents.com" target="_blank" rel="noopener" class="project-link">View project</a>
+        </div>
+      </div>
+
+      <div class="project-card chrome">
+        <div class="chrome-bar">
+          <div class="chrome-dots"><span></span><span></span><span></span></div>
+          <div class="chrome-url">tcjhomeaccents.com</div>
+        </div>
+        <div class="project-thumb">
+          <img src="images/project2.jpg" alt="TCJ Accent Chairs product page">
+        </div>
+        <div class="project-info">
+          <h3>TCJ Accent Website</h3>
+          <p>Product and catalog pages for TCJ Home Accents — sofas, dining sets, accent chairs, tables, and more, each with pricing and pre-order details.</p>
+          <div class="project-tags"><span>WordPress</span><span>Product Catalog</span></div>
+          <a href="https://tcjhomeaccents.com" target="_blank" rel="noopener" class="project-link">View project</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="pricing" style="background:var(--paper-dim);">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="kicker">pricing</span>
+      <h2>Simple, transparent packages</h2>
+    </div>
+    <div class="price-grid">
+      <div class="price-card">
+        <h3>Basic Website</h3>
+        <div class="price-tag">₦150,000 – ₦250,000</div>
+        <p>Simple business or personal website — perfect for getting started online.</p>
+      </div>
+      <div class="price-card featured">
+        <span class="featured-badge">MOST POPULAR</span>
+        <h3>Standard Business Website</h3>
+        <div class="price-tag">₦300,000 – ₦500,000</div>
+        <p>Multi-page WordPress website with the pages and features a growing business needs.</p>
+      </div>
+      <div class="price-card">
+        <h3>Premium Website</h3>
+        <div class="price-tag">₦600,000+</div>
+        <p>Advanced design and custom features for businesses that want the full package.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <span class="kicker">skills</span>
+      <h2>Tools I work with</h2>
+    </div>
+    <div class="skills-row">
+      <span class="skill-chip">HTML</span>
+      <span class="skill-chip">CSS</span>
+      <span class="skill-chip">WordPress</span>
+      <span class="skill-chip">Git &amp; GitHub</span>
+      <span class="skill-chip">Basic SEO</span>
+    </div>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <div class="wrap">
+    <span class="kicker">get in touch</span>
+    <h2>Let's work together</h2>
+    <p>Have a project in mind? Tell me what you're building and I'll get back to you with next steps.</p>
+    <div class="contact-ctas">
+      <a href="mailto:bassjaytech@gmail.com" class="btn btn-primary">Email Me</a>
+      <a href="https://wa.me/2349161837230" class="btn btn-outline">WhatsApp</a>
+    </div>
+    <div class="contact-links">
+      <a href="https://github.com/bass-jay" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  © 2026 Bass Jay. Built with HTML &amp; CSS.
+</footer>
+
+</body>
+</html>
